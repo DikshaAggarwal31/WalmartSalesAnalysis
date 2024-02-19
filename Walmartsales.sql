@@ -71,6 +71,52 @@ ALTER TABLE sales ADD COLUMN month_name VARCHAR(10);
 
 UPDATE sales
 SET month_name = MONTHNAME(date);
+-- -------------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------------------
+-- -------------------------------------  Generic ------------------------------------------
+
+-- How many unique cities does the data have?
+SELECT
+     distinct city 
+     from sales;
+     
+-- In which city is each branch?
+SELECT 
+  distinct branch
+  from sales;
+  
+  SELECT 
+   distinct city, 
+   branch
+   from sales;
+   
+-- -------------------------------------------------------------
+-- -------------------  Product  ----------------------------------
+
+-- How many unique product lines does the data have?
+SELECT
+   count(distinct product_line)
+   FROM sales;
+
+-- What is the most common payment method?
+SELECT 
+payment_method,
+  count(payment_method) AS cnt
+  from sales
+  Group BY payment_method
+  Order By cnt DESC;
+ 
+
+ -- What is the most selling product line?
+ Select
+	product_line,
+    count(product_line)
+    from sales;
+  
+
+
 
 
 
