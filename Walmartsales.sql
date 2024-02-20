@@ -108,13 +108,57 @@ payment_method,
   Group BY payment_method
   Order By cnt DESC;
  
-
  -- What is the most selling product line?
- Select
-	product_line,
-    count(product_line)
-    from sales;
+select
+    product_line,
+    count(product_line) AS cnt
+    from sales
+    GROUP BY product_line
+    ORDER BY cnt DESC;
   
+ 
+ -- What is the total revenue by month?
+  SELECT
+  month_name as month,
+  SUM(total) AS total_revenue
+  from sales
+  GROUP BY month_name
+  order by total_revenue DESC;
+  
+-- What month had the largest COGS?
+SELECT
+month_name as month,
+COUNT(cogs) as MAXCOGS
+from sales
+Group By month_name
+Order By MAXCOGS DESC;
+
+-- What product line had the largest revenue?
+Select
+product_line,
+SUM(total)as largest_revenue
+from sales
+group by product_line
+order by largest_revenue DESC;
+
+-- What is the city with the largest revenue?
+Select 
+branch,
+city,
+SUM(total) as largest_revenue
+from sales
+group by city, branch
+order by largest_revenue Desc;
+
+-- What product line had the largest VAT?
+SELECT
+product_line,
+AVG(VAT) AS avg_tax
+from sales
+group by product_line
+order by avg_tax DESC;
+
+-- Fetch each product line and add a column to those product line showing "Good", "Bad". Good if its greater than average sales
 
 
 
@@ -127,8 +171,42 @@ payment_method,
 
 
 
+-- Which branch sold more products than average product sold?
+SELECT
+branch,
+SUM(quantity) AS avg_product_sold
+from sales
+group by branch
+HAVING SUM(quantity) > (Select AVG(quantity) from sales)
+order by avg_product_sold DESC;
 
+-- What is the most common product line by gender?
+Select
+gender,
+product_line,
+count(gender) as total_cnt
+from sales
+group by gender, product_line
+order by total_cnt desc;
 
-
+-- What is the average rating of each product line?
+Select 
+product_line,
+Round(AVG(rating), 2) as avg_rating
+from sales
+group by product_line
+order by avg_rating DESC;
 
 -- --------------------------------------------------------------------------------------------------------
+-- ----------------------------------- Sales ---------------------------------------------------------------
+
+-- Number of sales made in each time of the day per weekday
+SELECT 
+time_of_day,
+Count(*) as total_sales
+from sales
+where day_name ='Wednesday'
+group by time_of_day
+order by total_sales DESC
+
+-- Which of the customer types brings the most revenue?
